@@ -32,26 +32,29 @@ import "./styles/about.scss";
 
 function App() {
   return (
+
     <Router>
       <Header isAuthenticated={true} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
-          //           Add the Route for CART
-      
-          //           Add the Route for SHIPPING
-        
         <Route path="/login" element={<Login />} />
+        {/*   //           Add the Route for CART
+
+        //           Add the Route for SHIPPING
+
         <Route path="/me" element={<Profile />} />
          //           Add the Route for MY ORDERS
 
-        <Route path="/order/:id" element={<OrderDetails />} />
-      
-       
+        <Route path="/order/:id" element={<OrderDetails />} /> */}
 
-        
+
+
+
       </Routes>
+
+
 
       <Footer />
     </Router>
