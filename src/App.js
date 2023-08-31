@@ -39,14 +39,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/shipping" element={<Shipping />} />
-        {/*   //           Add the Route for CART
-
-        //           Add the Route for SHIPPING
-
         <Route path="/me" element={<Profile />} />
-         //           Add the Route for MY ORDERS
-
-        <Route path="/order/:id" element={<OrderDetails />} /> */}
+        <Route path="/myorders" element={<MyOrders />} />
+        <Route path="/order/:id" element={<OrderDetails />} /> 
 
 
 
