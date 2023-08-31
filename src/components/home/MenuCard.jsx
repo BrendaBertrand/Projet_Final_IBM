@@ -1,8 +1,18 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Popup from 'reactjs-popup';
+import { useDispatch } from 'react-redux';
+import { addToCart } from "../lib/actions";
 
-const MenuCard = ({ itemNum, burgerSrc, price, title, handler, delay = 0 }) => {
+const MenuCard = ({ item}) => {
+
+  const dispatch = useDispatch();
+  const add = (item) => {
+    dispatch(addToCart(item));
+  
+   };
+
+
   return (
     <motion.div
       className="menuCard"
@@ -15,25 +25,24 @@ const MenuCard = ({ itemNum, burgerSrc, price, title, handler, delay = 0 }) => {
         opacity: 1,
       }}
       transition={{
-        delay,
+        delay: item.delay
       }}
     >
       <div></div>
       <main>
-        <img src={burgerSrc} alt={itemNum} />
+        <img src={process.env.PUBLIC_URL + "/assets/" + item.src} alt={item.name} />
 
-        <h5>₹{price}</h5>
+        <h5>{item.price}€</h5>
 
-        <p>{title}</p>
-        <Popup trigger=
-                {<button onClick={() => handler(itemNum)}>Buy Now</button>}
-               >
-                <div style={{color:"red", transform: 'translate(0%,-500%)', backgroundColor: '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'}}>Added to cart!</div>
-               
-            </Popup>
-            
-
+        <p>{item.name}</p>
         
+        <Popup trigger=
+          {<button>Buy Now</button>}
+          onOpen={() => add(item)}>
+          <div style={{ color: "red", transform: 'translate(0%,-500%)', backgroundColor: '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}>Added to cart!</div>
+
+        </Popup>
+
       </main>
     </motion.div>
   );

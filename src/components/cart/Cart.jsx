@@ -1,14 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import burger1 from "../../assets/burger1.png";
-import burger2 from "../../assets/burger2.png";
-// import burger3 here
+import { useSelector } from "react-redux";
+import { burgers } from "../../data";
+import { useState,useEffect } from "react";
 
-const CartItem = ({ value, title, img, increment, decrement }) => (
+
+const CartItem = ({ value, title, img, increment, decrement, price }) => (
   <div className="cartItem">
     <div>
       <h4>{title}</h4>
-      <img src={img} alt="Item" />
+      <img src={process.env.PUBLIC_URL + `/assets/${img}`} alt="Item" />
     </div>
 
     <div>
@@ -20,18 +21,41 @@ const CartItem = ({ value, title, img, increment, decrement }) => (
 );
 
 const Cart = () => {
-  const increment = (item) => {};
+  const [subTotal, setSubTotal] = useState(0.00);
+  const [total, setTotal] = useState(0.00);
+  const [shipping, setShipping] = useState(0.00);
+  const [tax, setTax] = useState(0.00);
 
-  const decrement = (item) => {};
+  const items = useSelector(state => state.items);
+
+  const calculTotal = (a, b) => Number((Number(a) * Number(b)).toFixed(2));
+
+  useEffect(() => {
+      let totalLoc = 0;
+      items.map(item => totalLoc += calculTotal(item.quantity, item.details.price))
+      setSubTotal(totalLoc===0 ? 0 : totalLoc.toFixed(1));
+      setTotal(totalLoc !== 0 ? (totalLoc + shipping).toFixed(2) : 0);
+      setShipping(totalLoc !== 0 ? 10 : 0);
+  },[items, shipping])
+
+  const increment = (item) => { };
+
+  const decrement = (item) => { };
 
   return (
     <section className="cart">
       <main>
-        <CartItem
+        {burgers.map((element, idx) => <CartItem key={idx} img={element.src} title={element.name}
+          value={0} increment={() => increment()}
+          decrement={() => decrement()} />
+        )}
+
+        {/* <CartItem
           title={"Cheese Burger"}
           img={burger1}
           value={0}
           increment={() => increment(1)}
+          decrement={() => decrement(1)}
 
         // Add the function for decrementing the order by 1 
        
@@ -41,29 +65,30 @@ const Cart = () => {
           img={burger2}
           value={0}
           increment={() => increment(2)}
+          decrement={() => decrement(2)}
         // Add the function for decrementing the order by 2
        
-        />
+        /> */}
 
         {/* Fill up the code for Cheese Burger similarly */}
-       
+
 
         <article>
           <div>
             <h4>Sub Total</h4>
-            <p>₹{2000}</p>
+            <p>{subTotal}€</p>
           </div>
           <div>
             <h4>Tax</h4>
-            <p>₹{2000 * 0.18}</p>
+            <p>{tax}€</p>
           </div>
           <div>
             <h4>Shipping Charges</h4>
-            <p>₹{200}</p>
+            <p>{shipping}€</p>
           </div>{" "}
           <div>
             <h4>Total</h4>
-            <p>₹{2000 + 2000 * 0.18 + 200}</p>
+            <p>{total}€</p>
           </div>
           <Link to="/shipping">Checkout</Link>
         </article>
