@@ -1,51 +1,75 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Country, State } from "country-state-city";
 import Popup from 'reactjs-popup';
+import { useState } from "react";
+import PhoneInput from "react-phone-number-input/input";
+
+
 
 const Shipping = () => {
+  const [states, setStates] = useState([]);
+  const [pays, setPays] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+
+  const removeNonNumbers = (e) => e.target.value = e.target.value.replace(/\D/, '');
+
+
+  useEffect(() => {
+    setStates(State.getStatesOfCountry(pays));
+    console.log(pays)
+  }, [pays])
+
   return (
     <section className="shipping">
       <main>
-        <h1>Shipping Details</h1>
+        <h1>Détails de la livraison</h1>
         <form>
           <div>
-            <label>H.No.</label>
-            <input type="text" placeholder="Enter House No." />
+            <label>Adresse</label>
+            <input type="text" placeholder="Introduisez votre adresse" />
           </div>
           <div>
-            <label>City</label>
-            <input type="text" placeholder="Enter City" />
+            <label>Code Postal</label>
+            <input type="text" onKeyUp={(e) => removeNonNumbers(e)} placeholder="Introduisez votre code postal" />
           </div>
           <div>
-              {/* Compelte the code for the COUNTRY DROPDOWN*/}
-            <label>Country</label>
-
-            <select>
-              <option value="">Country</option>
-// Enter the code here for country dropdown           
-                  </option>
-                ))}
+            <label>Ville</label>
+            <input type="text" placeholder="Introduisez votre ville" />
+          </div>
+          <div>
+            <label>Pays</label>
+            <select onChange={(event) => setPays(event.target.value)} id="paysInput">
+              <option value="">Pays</option>
+              {Country && Country.getAllCountries().map(country => <option key={country.isoCode} value={country.isoCode}>{country.name}</option>)}
             </select>
           </div>
           <div>
-              {/* Add the code for the STATE DROPDOWN*/}
-           
+            <label>Etat/Région</label>
+            <select >
+              <option value="">Etat/Région</option>
+              {(State && states !== [] && states).map(state =>
+                <option key={state.isoCode} value={state.isoCode}>{state.name}</option>)}
+            </select>
           </div>
           <div>
-            <label>Pin Code</label>
-            <input type="number" placeholder="Enter Pincode" />
+            <label>Téléphone</label>
+            <PhoneInput
+              country={pays}
+              value={phoneNumber}
+              onChange={setPhoneNumber}
+              placeholder="Introduisez votre numéro de téléphone" />
           </div>
-        // Enter thr code for contact           
-          
-          <Popup trigger=
-                {<button type = "button">Confirm Order</button>}
-                position="right center">
-                <div style={{color:"red",position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)', backgroundColor: '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)'}}>Order Placed</div>
-               
-            </Popup>
+   
+
+          <Popup position="top center" trigger=
+            {<button type="button submit" className="px-5 my-3">Confirmer la commande</button>}
+            >
+            <div style={{width:"30vh",  color: "red", transform: 'translate(0%, -500%)', backgroundColor: '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}>Votre commande est en cours de traitement</div>
+
+          </Popup>
         </form>
       </main>
-    </section>
+    </section >
   );
 };
 
