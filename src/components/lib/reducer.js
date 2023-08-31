@@ -40,6 +40,8 @@ export default function onlineStoreApp(state = initialState, action) {
             idx >-1 ? newState.items[idx].quantity = action.payload.quantity + newState.items[idx].quantity 
             : newState.items.push(action.payload);
 
+            console.log(newState)
+
             return Object.assign({}, state, {items: [...newState.items]})
             
 
@@ -47,7 +49,7 @@ export default function onlineStoreApp(state = initialState, action) {
         case actions.UPDATE_CART:
             return Object.assign({}, state, {
                 items: state.items.map(item => {
-                    return item.ref === action.payload.item.ref ? Object.assign({}, item, {
+                    return item.details.ref === action.payload.item.details.ref ? Object.assign({}, item, {
                         quantity: action.payload.quantity
                     }) : item
                 })
@@ -56,7 +58,7 @@ export default function onlineStoreApp(state = initialState, action) {
         case actions.REMOVE_FROM_CART:
             return Object.assign({}, state, {
                 items: state.items.filter(item => {
-                    return item.ref !== action.payload.ref
+                    return item.details.ref !== action.payload.details.ref
                 })
             })
 

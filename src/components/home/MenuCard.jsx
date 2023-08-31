@@ -9,7 +9,6 @@ const MenuCard = ({ item}) => {
   const dispatch = useDispatch();
   const add = (item) => {
     dispatch(addToCart(item));
-  
    };
 
 
